@@ -10,7 +10,7 @@ int cont = 0;
 
 void produtor(void* arg){
 
-    int produto;
+    int produto = 0;
 
     while(1){
 
@@ -25,7 +25,7 @@ void produtor(void* arg){
 
         buffer[cont] = produto;
         cont++;
-        printf("Produtor adicionou um item ao buffer! Produtos no buffer: %d\n", cont);
+        printf("Produtor adicionou o item %d ao buffer! Produtos no buffer: %d\n", buffer[cont-1], cont);
 
         pthread_cond_signal(&cond_consumidor);
         pthread_mutex_unlock(&mutex);
@@ -36,6 +36,24 @@ void produtor(void* arg){
 
 void consumidor(void* arg){
 
+    while(1){
+
+        pthread_mutex_lock(&mutex);
+
+        while(cont == 0){
+            printf("Buffer vazio! Esperando o produtor\n");
+            pthread_cond_wait(&cond_consumidor, &mutex);
+        }
+
+        int item_consumido = buffer[cont-1];
+        cont--;
+        printf("Consumidor consumiu o item %d do Buffer! produtos do buffer %d\n", item_consumido, cont);
+
+        pthread_cond_signal(&cond_produtor);
+        pthread_mutex_unlock(&mutex);
+
+    }
+
 }
 
 int main(){
@@ -43,8 +61,8 @@ int main(){
     pthread_t t_produtor;
     pthread_t t_consumidor;
 
-    pthread_create(t_produtor, NULL, produtor, NULL);
-    pthread_create(t_consumidor, NULL, consumidor, NULL);
+    pthread_create(&t_produtor, NULL, produtor, NULL);
+    pthread_create(&t_consumidor, NULL, consumidor, NULL);
 
     pthread_join(t_produtor, NULL);
     pthread_join(t_consumidor, NULL);
