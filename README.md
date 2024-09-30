@@ -1,6 +1,6 @@
 # Projeto1-Deadlocks-Threads
 
-Esse código implementa soluções para problemas clássicos da programação concorrente utilizando threads e semáforos no padrão POSIX. 
+Esse código implementa soluções para problemas clássicos da programação concorrente utilizando threads com semáforos e variáveis de condições no padrão POSIX. 
 
 ## Problema do Produtor/Consumidor
 
