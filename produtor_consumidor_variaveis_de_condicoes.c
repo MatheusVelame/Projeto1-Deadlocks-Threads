@@ -1,5 +1,6 @@
 #include <pthread.h>
 #include <stdio.h>
+#include <unistd.h>
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t cond_produtor = PTHREAD_COND_INITIALIZER;
@@ -26,6 +27,7 @@ void produtor(void* arg){
         buffer[cont] = produto;
         cont++;
         printf("Produtor adicionou o item %d ao buffer! Produtos no buffer: %d\n", buffer[cont-1], cont);
+        sleep(2);
 
         pthread_cond_signal(&cond_consumidor);
         pthread_mutex_unlock(&mutex);
@@ -48,6 +50,7 @@ void consumidor(void* arg){
         int item_consumido = buffer[cont-1];
         cont--;
         printf("Consumidor consumiu o item %d do Buffer! produtos do buffer %d\n", item_consumido, cont);
+        sleep(2);
 
         pthread_cond_signal(&cond_produtor);
         pthread_mutex_unlock(&mutex);
