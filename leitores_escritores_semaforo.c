@@ -80,7 +80,7 @@ int main() {
     sem_destroy(&mutex);
     sem_destroy(&bloqueio_escrita);
 
-    printf("Terminando processo Leitores/EScritores.\n\n");
+    printf("Terminando processo Leitores/Escritores.\n\n");
 
     return 0;
 }
